@@ -1,0 +1,1 @@
+export const BACK_URL: string = 'https://www.svo.aero/bitrix/timetable/';

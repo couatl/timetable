@@ -1,0 +1,10 @@
+.flight-table {
+    display: block;
+    padding: 2em;
+}
+
+.flight-table__item {
+    font-size: 20px;
+    color: black;
+    margin: 1em 2em 1em 0;
+}

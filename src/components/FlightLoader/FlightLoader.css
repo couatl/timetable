@@ -1,0 +1,28 @@
+.loader {
+    height: 40px;
+    margin: 40px auto;
+    width: 70px;
+    stroke-dasharray: 425.59;
+    stroke-dashoffset: 425.59;
+    animation: plane-loading-animation 3s linear infinite;
+}
+
+.loader-wrapper {
+    position: absolute;
+    margin-right: 4em;
+    width: -webkit-fill-available;
+    z-index: 1000000;
+}
+
+@keyframes plane-loading-animation {
+    50% {
+        stroke-dashoffset: 425.59;
+    }
+    50% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -425.59;
+    }
+}
+

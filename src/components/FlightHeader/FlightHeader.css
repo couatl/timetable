@@ -1,0 +1,38 @@
+
+.flight-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.flight-header__type {
+    display: flex;
+    padding: 1em;
+    font-size: 2em;
+    font-weight: 900;
+}
+
+.flight-header__type-item {
+    display: block;
+    margin-right: 1em;
+}
+
+.flight-header__filters {
+    display: flex;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+.active {
+    background-image: linear-gradient(90deg,#a35bcd,#1b60db 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ant-checkbox {
+    font-size: 1em;
+    color: #141251;
+}
+
+.ant-checkbox-wrapper {
+    font-size: 1em;
+}
