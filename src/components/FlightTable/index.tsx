@@ -1,9 +1,8 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
 
 import * as moment from 'moment';
 
-import {Col, List, Row, Spin} from 'antd';
+import {Button, Col, List, Row, Spin} from 'antd';
 
 import './FlightTable.css';
 
@@ -12,6 +11,8 @@ import FlightLoader from "../FlightLoader";
 interface IProps {
     loading: boolean;
     data: any[];
+    showLoadMore: boolean;
+    handleLoadMore: any;
 }
 
 class FlightTable extends React.Component<IProps> {
@@ -57,6 +58,14 @@ class FlightTable extends React.Component<IProps> {
 
     public render(): JSX.Element {
         const loader = <FlightLoader/>;
+        const loadMore = this.props.showLoadMore && !this.props.loading ? (
+            <div style={{
+                height: 32, lineHeight: '32px', marginTop: 12, textAlign: 'center'
+            }}
+            >
+                <Button onClick={this.props.handleLoadMore}>Показать больше</Button>
+            </div>
+        ) : null;
 
 
         return <div className="flight-table">
@@ -66,23 +75,11 @@ class FlightTable extends React.Component<IProps> {
                     dataSource={this.props.data}
                     renderItem={this.renderItem}
                     locale={{emptyText: "Ничего не нашлось"}}
+                    loadMore={loadMore}
                 />
             </Spin>
         </div>;
     }
 }
 
-const mapStateToProps = (state: any) => {
-    return {
-        // loading: state.flight.loading
-    };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {};
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(FlightTable);
+export default FlightTable;

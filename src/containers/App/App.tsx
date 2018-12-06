@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-// import { RouteComponentProps, withRouter } from 'react-router';
-
 import FlightLoader from '../../components/FlightLoader';
 import Flight from "../Flights/Flight";
 

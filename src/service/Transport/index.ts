@@ -1,5 +1,3 @@
-// import * as fetch from 'isomorphic-fetch';
-
 import {BACK_URL} from './constants';
 
 class Transport {
