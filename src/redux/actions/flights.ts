@@ -7,19 +7,18 @@ import transport from '../../service/Transport';
 
 export function setLoading(loading: any): any {
     return {
-        type: constants.LOADING_SET,
-        // tslint:disable-next-line
-        loading
+        loading,
+        type: constants.LOADING_SET
     };
 }
 
 export function setFlights(data: any): any {
     return {
-        type: constants.FLIGHTS_SET,
-        // tslint:disable-next-line
-        data
+        data,
+        type: constants.FLIGHTS_SET
     };
 }
+
 
 function filterFlights(data: any, type: string) {
     data = data.items.reduce((items: any[], item: any) => {
@@ -52,29 +51,28 @@ function filterFlights(data: any, type: string) {
         return items;
     }, []);
 
-    // tslint:disable-next-line
-    console.log(data);
-
     return data;
 }
 
-export function getFlights(type: string): any {
+export function getFlights(type: string, pagination = 1, data?: any): any {
     return async (dispatch: any) => {
         let notificationInfo: any = {};
 
         dispatch(setLoading(true));
-        // const response: Response = await transport.get('?direction=departure&dateStart=2018-12-04T16:00:00%2B03:00&dateEnd=2018-12-04T18:00:00%2B03:00&perPage=9999&page=0&locale=ru');
+
         const response: Response = await transport.get(`?direction=${type}&
         dateStart=${encodeURIComponent(moment().startOf('day').format("YYYY-MM-DDTHH:mm:ssZ"))}&
         dateEnd=${encodeURIComponent(moment().endOf('day').format("YYYY-MM-DDTHH:mm:ssZ"))}&
-        perPage=20&page=0&locale=ru`);
+        perPage=30&page=${pagination}&locale=ru`);
         if (response.ok) {
             const json = await response.json();
-            // tslint:disable-next-line
-            console.log(json);
 
             const flights = filterFlights(json, type);
-            dispatch(setFlights(flights));
+            if (pagination !== 0) {
+                dispatch(setFlights(data.concat(flights)));
+            } else {
+                dispatch(setFlights(flights));
+            }
         } else {
             notificationInfo = {
                 duration: 3,
