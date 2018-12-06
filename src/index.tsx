@@ -1,4 +1,4 @@
-// import 'babel-polyfill';
+import 'babel-polyfill';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -11,7 +11,6 @@ import rootReducer from './redux/reducers/index';
 import registerServiceWorker from './registerServiceWorker';
 
 import './index.css';
-import './theme.less';
 
 import * as moment from 'moment';
 import 'moment/locale/ru';
