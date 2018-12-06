@@ -14,7 +14,7 @@ interface IState {
 }
 
 interface IProps {
-    getFlights: (type: string) => any;
+    getFlights: (type: string, pagination?: any, data?: any[]) => any;
     setFlights: (data: any[]) => any;
     setLoading: (loading: boolean) => any;
     data: any[];
@@ -27,9 +27,7 @@ class Flight extends React.Component<IProps, IState> {
 
         this.state = {
             delayed: false,
-            pagination: {
-                current: 0
-            },
+            pagination: 1,
             search: '',
             type: 'departure'
         };
@@ -38,6 +36,7 @@ class Flight extends React.Component<IProps, IState> {
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleResetSearch = this.handleResetSearch.bind(this);
+        this.handleLoadMore = this.handleLoadMore.bind(this);
     }
 
     public componentDidMount() {
@@ -70,6 +69,7 @@ class Flight extends React.Component<IProps, IState> {
     public handleResetSearch() {
         this.setState({
             ...this.state,
+            delayed: false,
             search: ''
         });
 
@@ -77,28 +77,44 @@ class Flight extends React.Component<IProps, IState> {
     }
 
     public handleCheckboxChange(event: any) {
-        this.setState({
-            ...this.state,
-            delayed: !this.state.delayed
-        });
-
         if (event.target.checked) {
+            this.setState({
+                ...this.state,
+                delayed: true
+            });
             this.props.setFlights(this.props.data.filter((elem: any) => {
                 return elem.delayed;
             }));
         } else {
+            this.setState({
+                ...this.state,
+                delayed: false,
+                search: ''
+            });
             this.props.getFlights(this.state.type);
         }
     }
 
+    public handleLoadMore() {
+        const currentPagination = this.state.pagination;
+        this.setState({
+            ...this.state,
+            pagination: currentPagination + 1
+        });
+
+        this.props.getFlights(this.state.type, currentPagination + 1, this.props.data);
+    }
+
     public render(): JSX.Element {
         const {data, loading} = this.props;
-        const {type} = this.state;
+        const {type, delayed, search} = this.state;
+        const showLoadMore = search === '' && !delayed;
 
         return <div className="flight">
             <FlightHeader handleTypeChange={this.handleTypeChange} handleCheckboxChange={this.handleCheckboxChange}
                           handleSearch={this.handleSearch} handleResetSearch={this.handleResetSearch} type={type}/>
-            <FlightTable data={data} loading={loading}/>
+            <FlightTable data={data} loading={loading} handleLoadMore={this.handleLoadMore}
+                         showLoadMore={showLoadMore}/>
         </div>;
     }
 }
@@ -112,8 +128,8 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        getFlights(type: string) {
-            dispatch(getFlights(type));
+        getFlights(type: string, pagination = 1, data = []) {
+            dispatch(getFlights(type, pagination, data));
         },
         setFlights(data: any[]) {
             dispatch(setFlights(data));
