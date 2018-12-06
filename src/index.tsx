@@ -13,6 +13,11 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import './theme.less';
 
+import * as moment from 'moment';
+import 'moment/locale/ru';
+
+moment.locale('ru');
+
 const middleware = applyMiddleware(thunk);
 const store = createStore(rootReducer, {}, middleware);
 
