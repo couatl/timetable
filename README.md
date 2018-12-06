@@ -1,6 +1,6 @@
 # Airport Sheremetyevo flights timetable
 
-Made with React and Antd as ui kit.  
+Made with React, Antd as ui kit and sheremetyevo public api.
   
 In the project directory, you can run:
 
