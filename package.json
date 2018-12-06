@@ -9,6 +9,7 @@
     "antd": "^3.11.0",
     "grommet": "^2.1.0",
     "grommet-icons": "^3.2.1",
+    "moment": "^2.22.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-redux": "^5.1.1",
@@ -19,7 +20,7 @@
     "styled-components": "^4.1.2"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "PORT=8080 react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
