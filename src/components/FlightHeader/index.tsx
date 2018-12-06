@@ -4,8 +4,6 @@ import {Checkbox, Icon, Input} from 'antd';
 
 import './FlightHeader.css';
 
-// const Search = Input.Search;
-
 interface IProps {
     handleTypeChange: (type: string) => void;
     handleCheckboxChange: any;
@@ -16,6 +14,7 @@ interface IProps {
 
 interface IState {
     search: string;
+    checkbox: boolean;
 }
 
 export default class FlightHeader extends React.Component<IProps, IState> {
@@ -23,6 +22,7 @@ export default class FlightHeader extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
+            checkbox: false,
             search: ''
         };
 
@@ -31,6 +31,7 @@ export default class FlightHeader extends React.Component<IProps, IState> {
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.onResetSearch = this.onResetSearch.bind(this);
         this.onSearch = this.onSearch.bind(this);
+        this.onCheckboxChange = this.onCheckboxChange.bind(this);
     }
 
     public onDepartureClick() {
@@ -50,7 +51,7 @@ export default class FlightHeader extends React.Component<IProps, IState> {
     }
 
     public onChangeSearch(event: any) {
-        this.setState({ search: event.target.value });
+        this.setState({...this.state, search: event.target.value});
 
         if (event.target.value === '') {
             this.onResetSearch();
@@ -58,17 +59,27 @@ export default class FlightHeader extends React.Component<IProps, IState> {
     }
 
     public onResetSearch() {
+        this.setState({search: '', checkbox: false});
         this.props.handleResetSearch();
-        this.setState({ search: '' });
     }
 
     public onSearch() {
         this.props.handleSearch(this.state.search);
     }
 
+    public onCheckboxChange(event: any) {
+        if (event.target.checked) {
+            this.setState({...this.state, checkbox: event.target.checked});
+        } else {
+            this.setState({search: '', checkbox: false});
+        }
+        this.props.handleCheckboxChange(event);
+    }
+
     public render(): JSX.Element {
-        const { search } = this.state;
-        const suffix = search ? <Icon type="close-circle" style={{cursor: 'pointer'}} onClick={this.onResetSearch} /> : null;
+        const {search, checkbox} = this.state;
+        const suffix = search ?
+            <Icon type="close-circle" style={{cursor: 'pointer'}} onClick={this.onResetSearch}/> : null;
 
         const departureClass = `flight-header__type-item ${this.props.type === 'departure' ? 'active' : ''}`;
         const arrivalClass = `flight-header__type-item ${this.props.type === 'arrival' ? 'active' : ''}`;
@@ -85,8 +96,8 @@ export default class FlightHeader extends React.Component<IProps, IState> {
             <div className="flight-header__filters">
                 <Input
                     placeholder="Поиск по номеру рейса"
-                    // placeholder="Поиск по номеру рейса, городу и авиакомпании"
-                    prefix={<Icon type="search" style={{cursor: 'pointer', marginLeft: '-3px'}} onClick={this.onSearch}/>}
+                    prefix={<Icon type="search" style={{cursor: 'pointer', marginLeft: '-3px'}}
+                                  onClick={this.onSearch}/>}
                     suffix={suffix}
                     value={search}
                     onChange={this.onChangeSearch}
@@ -95,11 +106,12 @@ export default class FlightHeader extends React.Component<IProps, IState> {
                     onPressEnter={this.onSearch}
                 />
                 <Checkbox
-                    onChange={this.props.handleCheckboxChange}
+                    onChange={this.onCheckboxChange}
                     style={{
                         color: '#141251', fontSize: '0.9em',
                         margin: 'auto', width: '20em'
                     }}
+                    checked={checkbox}
                 >
                     Только задержанные
                 </Checkbox>
