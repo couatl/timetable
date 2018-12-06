@@ -5,6 +5,6 @@
 
 .flight-table__item {
     font-size: 20px;
-    color: black;
-    margin: 1em 2em 1em 0;
+    color: rgb(20, 18, 81);
+    /*margin: 1em 2em 1em 0;*/
 }
